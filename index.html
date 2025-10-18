@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>风筝的音乐收藏</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* 所有CSS样式保持不变 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), 
+                        url('a.jpg') no-repeat center center fixed;
+            background-size: cover;
+            color: #fff;
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        
+        .container {
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 5px;
+            padding: 20px;
+            color: white;
+            position: relative;
+        }
+        
+        .profile-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .profile-img {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            margin-bottom: 15px;
+        }
+        
+        header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 8px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: #fff;
+        }
+        
+        header p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            max-width: 500px;
+            margin: 0 auto;
+            margin-bottom: 5px;
+        }
+        
+        .search-box {
+            background: rgba(255, 255, 255, 0.25);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 12px 20px;
+            margin: 10px auto 15px;
+            max-width: 500px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease;
+            height: 54px;
+        }
+        
+        .search-box:hover {
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+        }
+        
+        .search-box input {
+            flex: 1;
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 1.1rem;
+            padding: 5px 10px;
+            color: #fff;
+            height: 100%;
+        }
+        
+        .search-box input::placeholder {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .search-box i {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.2rem;
+            margin-right: 10px;
+        }
+        
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .action-btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: all 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            font-weight: 600;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            flex: 1;
+            min-width: 140px;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .action-btn:active {
+            transform: translateY(0);
+        }
+        
+        .filters {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 100;
+            max-width: 500px;
+            width: 100%;
+            margin: 0 auto;
+        }
+
+        .custom-select {
+            position: relative;
+            width: 100%;
+        }
+        
+        .select-selected {
+            background-color: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(5px);
+            color: #ffffff;
+            padding: 12px 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 18px;
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            height: 46px;
+            width: 100%;
+        }
+        
+        .select-selected:after {
+            content: "";
+            width: 0;
+            height: 0;
+            border-left: 6px solid transparent;
+            border-right: 6px solid transparent;
+            border-top: 8px solid rgba(255, 255, 255, 0.8);
+            transition: all 0.3s;
+        }
+        
+        .select-selected.select-arrow-active:after {
+            transform: rotate(180deg);
+        }
+        
+        .select-selected:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.3);
+        }
+        
+        .select-items {
+            position: absolute;
+            background-color: rgba(50, 50, 70, 0.95);
+            backdrop-filter: blur(10px);
+            top: 100%;
+            left: 0;
+            right: 0;
+            z-index: 999;
+            border-radius: 0 0 15px 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            max-height: 0;
+            opacity: 0;
+            transition: all 0.3s ease;
+            overflow-y: auto;
+            width: 100%;
+        }
+        
+        .select-items.active {
+            max-height: 300px;
+            opacity: 1;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-top: none;
+        }
+        
+        .select-item {
+            padding: 12px 15px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .select-item:last-child {
+            border-bottom: none;
+        }
+        
+        .select-item:hover {
+            background-color: rgba(70, 70, 100, 0.8);
+        }
+        
+        .select-item.selected {
+            background-color: rgba(90, 90, 130, 0.8);
+            font-weight: 600;
+        }
+        
+        .song-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 12px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        
+        .song-card {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            padding: 10px 12px;
+            display: flex;
+            align-items: center;
+            min-height: 48px;
+            height: 48px;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .song-card:hover {
+            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        .song-card.copied::after {
+            content: '已复制';
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #4CAF50;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 10px;
+            font-size: 0.7rem;
+            animation: fadeOut 1.5s forwards;
+        }
+        
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            70% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+        
+        .song-number {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: rgba(255, 255, 255, 0.9);
+            margin-right: 12px;
+            min-width: 28px;
+            text-align: center;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+        
+        .song-info {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .song-title {
+            font-size: 1rem;
+            margin-bottom: 0;
+            color: #fff;
+            font-weight: 600;
+            line-height: 1.2;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            display: flex;
+            align-items: center;
+            height: 100%;
+        }
+        
+        .empty-message {
+            text-align: center;
+            color: white;
+            font-size: 1.2rem;
+            grid-column: 1 / -1;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            animation: pulse 2s infinite;
+            margin-top: 20px;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.7; }
+            50% { opacity: 1; }
+            100% { opacity: 0.7; }
+        }
+        
+        .copy-notification {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .copy-notification.show {
+            opacity: 1;
+        }
+
+        /* 回到顶部按钮样式 */
+        .back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 1000;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-to-top:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .back-to-top.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .back-to-top i {
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 768px) {
+            .song-list {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+                margin-top: 15px;
+                gap: 10px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+            
+            .profile-img {
+                width: 100px;
+                height: 100px;
+            }
+            
+            .search-box {
+                max-width: 400px;
+                margin: 8px auto 12px;
+                height: 50px;
+                padding: 10px 18px;
+            }
+            
+            .action-buttons {
+                margin-bottom: 15px;
+                flex-direction: row;
+                width: 100%;
+                max-width: 400px;
+                margin-left: auto;
+                margin-right: auto;
+            }
+            
+            .action-btn {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+                flex: 1;
+                min-width: auto;
+            }
+            
+            .filters {
+                margin-bottom: 20px;
+                max-width: 400px;
+            }
+            
+            .song-card {
+                padding: 8px 10px;
+                min-height: 44px;
+                height: 44px;
+            }
+            
+            .song-number {
+                font-size: 1.2rem;
+                min-width: 25px;
+                margin-right: 10px;
+            }
+            
+            .song-title {
+                font-size: 0.95rem;
+            }
+            
+            .select-selected {
+                height: 44px;
+                padding: 10px 15px;
+            }
+            
+            .empty-message {
+                margin-top: 15px;
+                padding: 25px;
+            }
+            
+            .back-to-top {
+                bottom: 20px;
+                right: 20px;
+                width: 45px;
+                height: 45px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .search-box {
+                padding: 10px 15px;
+                max-width: 320px;
+                margin: 5px auto 10px;
+                height: 46px;
+            }
+            
+            .action-buttons {
+                flex-direction: row;
+                gap: 10px;
+                margin-bottom: 15px;
+                max-width: 320px;
+            }
+            
+            .action-btn {
+                width: auto;
+                padding: 12px;
+                flex: 1;
+            }
+            
+            .filters {
+                gap: 10px;
+                margin-bottom: 15px;
+                max-width: 320px;
+            }
+            
+            .custom-select {
+                min-width: 120px;
+            }
+            
+            .select-selected {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+                height: 42px;
+            }
+            
+            .song-list {
+                grid-template-columns: 1fr;
+                margin-top: 15px;
+                gap: 8px;
+            }
+            
+            .profile-img {
+                width: 80px;
+                height: 80px;
+            }
+            
+            header h1 {
+                margin-bottom: 5px;
+            }
+            
+            header p {
+                margin-bottom: 3px;
+            }
+            
+            .song-card {
+                padding: 8px 10px;
+                min-height: 42px;
+                height: 42px;
+            }
+            
+            .song-number {
+                font-size: 1.1rem;
+                min-width: 22px;
+                margin-right: 8px;
+            }
+            
+            .song-title {
+                font-size: 0.9rem;
+            }
+            
+            .empty-message {
+                margin-top: 15px;
+                padding: 20px;
+                font-size: 1.1rem;
+            }
+            
+            .back-to-top {
+                bottom: 15px;
+                right: 15px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .back-to-top i {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="profile-container">
+                <img src="b.jpg" alt="个人头像" class="profile-img">
+                <h1>风筝</h1>
+                <p id="song-count">风筝的23首拿手歌</p>
+            </div>
+        </header>
+        
+        <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="搜索歌曲...">
+        </div>
+        
+        <div class="action-buttons">
+            <button class="action-btn" id="random-song">
+                <i class="fas fa-random"></i> 随便听听
+            </button>
+            <button class="action-btn" id="find-me">
+                <i class="fas fa-search-location"></i> 来找我吧
+            </button>
+        </div>
+        
+        <div class="filters">
+            <div class="custom-select">
+                <div class="select-selected">全部歌曲</div>
+                <div class="select-items">
+                    <div class="select-item" value="all">全部歌曲</div>
+                    <div class="select-item" value="A">A</div>
+                    <div class="select-item" value="B">B</div>
+                    <div class="select-item" value="C">C</div>
+                    <div class="select-item" value="D">D</div>
+                    <div class="select-item" value="E">E</div>
+                    <div class="select-item" value="F">F</div>
+                    <div class="select-item" value="G">G</div>
+                    <div class="select-item" value="H">H</div>
+                    <div class="select-item" value="I">I</div>
+                    <div class="select-item" value="J">J</div>
+                    <div class="select-item" value="K">K</div>
+                    <div class="select-item" value="L">L</div>
+                    <div class="select-item" value="M">M</div>
+                    <div class="select-item" value="N">N</div>
+                    <div class="select-item" value="O">O</div>
+                    <div class="select-item" value="P">P</div>
+                    <div class="select-item" value="Q">Q</div>
+                    <div class="select-item" value="R">R</div>
+                    <div class="select-item" value="S">S</div>
+                    <div class="select-item" value="T">T</div>
+                    <div class="select-item" value="U">U</div>
+                    <div class="select-item" value="V">V</div>
+                    <div class="select-item" value="W">W</div>
+                    <div class="select-item" value="X">X</div>
+                    <div class="select-item" value="Y">Y</div>
+                    <div class="select-item" value="Z">Z</div>
+                    <div class="select-item" value="#">#（数字/符号）</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="song-list" id="song-list">
+            <!-- 歌曲将通过JavaScript动态生成 -->
+        </div>
+        
+        <div class="copy-notification" id="copy-notification">已复制到剪贴板</div>
+        
+        <!-- 回到顶部按钮 -->
+        <div class="back-to-top" id="back-to-top">
+            <i class="fas fa-arrow-up"></i>
+        </div>
+    </div>
+
+    <script>
+        // 扩展的中文拼音首字母映射
+        const pinyinMap = {
+            '处': 'C', '天': 'T', '人': 'R', '牵': 'Q', '恋': 'L', '爱': 'A', 
+            '起': 'Q', '晴': 'Q', '光': 'G', '稻': 'D', '泡': 'P', '说': 'S',
+            '七': 'Q', '里': 'L', '香': 'X', '夜': 'Y', '曲': 'Q', '江': 'J',
+            '南': 'N', '青': 'Q', '花': 'H', '海': 'H', '明': 'M', '月': 'Y',
+            '星': 'X', '空': 'K', '大': 'D', '小': 'X', '雨': 'Y', '风': 'F',
+            // 新增常见中文首字母映射
+            '勇': 'Y', '后': 'H', '童': 'T', '加': 'J', '油': 'Y', '新': 'X',
+            '歌': 'G', '幸': 'X', '运': 'Y', '海': 'H', '浪': 'L', '山': 'S',
+            '水': 'S', '云': 'Y', '梦': 'M', '心': 'X', '情': 'Q', '思': 'S',
+            '想': 'X', '念': 'N', '泪': 'L', '笑': 'X', '哭': 'K', '喜': 'X',
+            '怒': 'N', '哀': 'A', '乐': 'L', '春': 'C', '夏': 'X', '秋': 'Q',
+            '冬': 'D', '红': 'H', '黄': 'H', '蓝': 'L', '绿': 'L', '紫': 'Z',
+            '白': 'B', '黑': 'H', '灰': 'H', '金': 'J', '银': 'Y', '铜': 'T',
+            '铁': 'T', '石': 'S', '木': 'M', '火': 'H', '土': 'T', '电': 'D',
+            '冰': 'B', '雪': 'X', '雨': 'Y', '雷': 'L', '风': 'F', '日': 'R',
+            '月': 'Y', '星': 'X', '辰': 'C', '天': 'T', '地': 'D', '人': 'R',
+            '生': 'S', '死': 'S', '爱': 'A', '恨': 'H', '情': 'Q', '仇': 'C',
+            '你': 'N', '我': 'W', '他': 'T', '她': 'T', '它': 'T', '们': 'M'
+        };
+
+        // 获取中文拼音首字母
+        function getPinyinInitial(char) {
+            // 如果是英文字母或数字,直接返回大写形式
+            if (/[A-Za-z0-9]/.test(char)) {
+                return char.toUpperCase();
+            }
+            
+            // 如果是中文字符,返回映射的首字母,如果没有映射则使用原字符
+            return pinyinMap[char] || char;
+        }
+
+        // 获取歌曲的首字母（处理多字符情况）
+        function getSongInitial(title) {
+            if (!title || title.length === 0) return "#";
+            
+            const firstChar = title[0];
+            
+            // 如果是英文或数字开头
+            if (/[A-Za-z0-9]/.test(firstChar)) {
+                return firstChar.toUpperCase();
+            }
+            
+            // 如果是中文,使用拼音映射
+            return getPinyinInitial(firstChar);
+        }
+
+        // 指定歌曲数据
+        const songs = [
+{title: "minemine", initial: getSongInitial ("M")},{title: "枫", initial: getSongInitial ("F")},{title: "彩虹", initial: getSongInitial ("C")},{title: "退后", initial: getSongInitial ("T")},{title: "画沙", initial: getSongInitial ("H")},{title: "稻香", initial: getSongInitial ("D")},{title: "夜曲", initial: getSongInitial ("Y")},{title: "搁浅", initial: getSongInitial ("G")},{title: "安静", initial: getSongInitial ("A")},{title: "晴天", initial: getSongInitial ("Q")},{title: "花海", initial: getSongInitial ("H")},{title: "暗号", initial: getSongInitial ("A")},{title: "分裂", initial: getSongInitial ("F")},{title: "对不起", initial: getSongInitial ("D")},{title: "圣诞星", initial: getSongInitial ("S")},{title: "园游会", initial: getSongInitial ("Y")},{title: "美人鱼", initial: getSongInitial ("M")},{title: "大笨钟", initial: getSongInitial ("D")},{title: "兰亭序", initial: getSongInitial ("L")},{title: "简单爱", initial: getSongInitial ("J")},{title: "发如雪", initial: getSongInitial ("F")},{title: "明明就", initial: getSongInitial ("M")},{title: "我不配", initial: getSongInitial ("W")},{title: "青花瓷", initial: getSongInitial ("Q")},{title: "七里香", initial: getSongInitial ("Q")},{title: "珊瑚海", initial: getSongInitial ("S")},{title: "等你下课", initial: getSongInitial ("D")},{title: "牛仔很忙", initial: getSongInitial ("N")},{title: "可爱女人", initial: getSongInitial ("K")},{title: "世界末日", initial: getSongInitial ("S")},{title: "爱情悬崖", initial: getSongInitial ("A")},{title: "自导自演", initial: getSongInitial ("Z")},{title: "烟花易冷", initial: getSongInitial ("Y")},{title: "说好不哭", initial: getSongInitial ("S")},{title: "告白气球", initial: getSongInitial ("G")},{title: "黑色毛衣", initial: getSongInitial ("H")},{title: "红尘客栈", initial: getSongInitial ("H")},{title: "半岛铁盒", initial: getSongInitial ("B")},{title: "断了的弦", initial: getSongInitial ("D")},{title: "一路向北", initial: getSongInitial ("Y")},{title: "爱情废柴", initial: getSongInitial ("A")},{title: "最长的电影", initial: getSongInitial ("Z")},{title: "爱在西元前", initial: getSongInitial ("A")},{title: "超人不会飞", initial: getSongInitial ("C")},{title: "米兰的小铁匠", initial: getSongInitial ("M")},{title: "蒲公英的约定", initial: getSongInitial ("P")},{title: "我是如此相信", initial: getSongInitial ("W")},{title: "不能说的秘密", initial: getSongInitial ("B")},{title: "说好的幸福呢", initial: getSongInitial ("S")},{title: "我落泪情绪零碎", initial: getSongInitial ("W")},{title: "给我一首歌的时间", initial: getSongInitial ("G")},{title: "认错", initial: getSongInitial ("R")},{title: "降温", initial: getSongInitial ("J")},{title: "内线", initial: getSongInitial ("N")},{title: "幻听", initial: getSongInitial ("H")},{title: "素颜", initial: getSongInitial ("S")},{title: "庐州月", initial: getSongInitial ("L")},{title: "燕归巢", initial: getSongInitial ("Y")},{title: "千百度", initial: getSongInitial ("Q")},{title: "拆东墙", initial: getSongInitial ("C")},{title: "想象之中", initial: getSongInitial ("X")},{title: "白马非马", initial: getSongInitial ("B")},{title: "敬酒不吃", initial: getSongInitial ("J")},{title: "有何不可", initial: getSongInitial ("Y")},{title: "你若成风", initial: getSongInitial ("N")},{title: "半城烟沙", initial: getSongInitial ("B")},{title: "最佳歌手", initial: getSongInitial ("Z")},{title: "灰色头像", initial: getSongInitial ("H")},{title: "雅俗共赏", initial: getSongInitial ("Y")},{title: "多余的解释", initial: getSongInitial ("D")},{title: "玫瑰花的葬礼", initial: getSongInitial ("M")},{title: "天龙八部之宿敌", initial: getSongInitial ("T")},{title: "11", initial: getSongInitial ("S")},{title: "画", initial: getSongInitial ("H")},{title: "透明", initial: getSongInitial ("T")},{title: "再见", initial: getSongInitial ("Z")},{title: "倒数", initial: getSongInitial ("D")},{title: "句号", initial: getSongInitial ("J")},{title: "唯一", initial: getSongInitial ("W")},{title: "泡沫", initial: getSongInitial ("P")},{title: "盲点", initial: getSongInitial ("M")},{title: "囚鸟", initial: getSongInitial ("Q")},{title: "瞬间", initial: getSongInitial ("S")},{title: "龙卷风", initial: getSongInitial ("L")},{title: "桃花诺", initial: getSongInitial ("T")},{title: "我的秘密", initial: getSongInitial ("W")},{title: "光年之外", initial: getSongInitial ("G")},{title: "一路逆风", initial: getSongInitial ("Y")},{title: "查克靠近", initial: getSongInitial ("C")},{title: "冰河时代", initial: getSongInitial ("B")},{title: "不想回家", initial: getSongInitial ("B")},{title: "岩石里的花", initial: getSongInitial ("Y")},{title: "你把我灌醉", initial: getSongInitial ("N")},{title: "写不完的温柔", initial: getSongInitial ("X")},{title: "红蔷薇白玫瑰", initial: getSongInitial ("H")},{title: "来自天堂的魔鬼", initial: getSongInitial ("L")},{title: "让世界暂停一分钟", initial: getSongInitial ("R")},{title: "你不是真正的快乐", initial: getSongInitial ("N")},{title: "她说", initial: getSongInitial ("T")},{title: "当你", initial: getSongInitial ("D")},{title: "江南", initial: getSongInitial ("J")},{title: "谢幕", initial: getSongInitial ("X")},{title: "木乃伊", initial: getSongInitial ("M")},{title: "学不会", initial: getSongInitial ("X")},{title: "我还想她", initial: getSongInitial ("W")},{title: "可惜没如果", initial: getSongInitial ("K")},{title: "背对背拥抱", initial: getSongInitial ("B")},{title: "黑夜问白天", initial: getSongInitial ("H")},{title: "爱笑的眼睛", initial: getSongInitial ("A")},{title: "一千年以后", initial: getSongInitial ("Y")},{title: "不为谁而作的歌", initial: getSongInitial ("B")},{title: "那些你很冒险的梦", initial: getSongInitial ("N")},{title: "怕", initial: getSongInitial ("P")},{title: "暧昧", initial: getSongInitial ("A")},{title: "雨爱", initial: getSongInitial ("Y")},{title: "点水", initial: getSongInitial ("D")},{title: "观众", initial: getSongInitial ("G")},{title: "暗涌", initial: getSongInitial ("A")},{title: "仰望", initial: getSongInitial ("Y")},{title: "年轮说", initial: getSongInitial ("N")},{title: "我想爱", initial: getSongInitial ("W")},{title: "带我走", initial: getSongInitial ("D")},{title: "喜剧收场", initial: getSongInitial ("X")},{title: "黑色月亮", initial: getSongInitial ("H")},{title: "与我无关", initial: getSongInitial ("Y")},{title: "想幸福的人", initial: getSongInitial ("X")},{title: "现代之形象", initial: getSongInitial ("X")},{title: "匿名的好友", initial: getSongInitial ("N")},{title: "失忆的金鱼", initial: getSongInitial ("S")},{title: "以年为单位的爱情", initial: getSongInitial ("Y")},{title: "180 度", initial: getSongInitial ("Y")},{title: "同类", initial: getSongInitial ("T")},{title: "旋涡", initial: getSongInitial ("X")},{title: "雨天", initial: getSongInitial ("Y")},{title: "风筝", initial: getSongInitial ("F")},{title: "遇见", initial: getSongInitial ("Y")},{title: "隐形人", initial: getSongInitial ("Y")},{title: "天黑黑", initial: getSongInitial ("T")},{title: "我怀念的", initial: getSongInitial ("W")},{title: "再也不见", initial: getSongInitial ("Z")},{title: "开始懂了", initial: getSongInitial ("K")},{title: "半句再见", initial: getSongInitial ("B")},{title: "honeyhoney", initial: getSongInitial ("H")},{title: "直来直往", initial: getSongInitial ("Z")},{title: "愚人的国度", initial: getSongInitial ("Y")},{title: "大人", initial: getSongInitial ("D")},{title: "失忆", initial: getSongInitial ("S")},{title: "勇气", initial: getSongInitial ("Y")},{title: "暖暖", initial: getSongInitial ("N")},{title: "慢冷", initial: getSongInitial ("M")},{title: "情歌", initial: getSongInitial ("Q")},{title: "夜夜夜夜", initial: getSongInitial ("Y")},{title: "没有如果", initial: getSongInitial ("M")},{title: "会呼吸的痛", initial: getSongInitial ("H")},{title: "如果有一天", initial: getSongInitial ("R")},{title: "爱久见人心", initial: getSongInitial ("A")},{title: "给未来的自己", initial: getSongInitial ("G")},{title: "那年", initial: getSongInitial ("N")},{title: "凉城", initial: getSongInitial ("L")},{title: "飞机", initial: getSongInitial ("F")},{title: "疑心病", initial: getSongInitial ("Y")},{title: "后继者", initial: getSongInitial ("H")},{title: "同花顺", initial: getSongInitial ("T")},{title: "外婆桥", initial: getSongInitial ("W")},{title: "无人之岛", initial: getSongInitial ("W")},{title: "飞鸟与蝉", initial: getSongInitial ("F")},{title: "一步之遥", initial: getSongInitial ("Y")},{title: "失恋俱乐部", initial: getSongInitial ("S")},{title: "love9", initial: getSongInitial ("L")},{title: "notmywrong", initial: getSongInitial ("N")},{title: "colorfulworld", initial: getSongInitial ("C")},{title: "红", initial: getSongInitial ("H")},{title: "两难", initial: getSongInitial ("L")},{title: "痛快", initial: getSongInitial ("T")},{title: "冷战", initial: getSongInitial ("L")},{title: "计划里", initial: getSongInitial ("J")},{title: "后视镜", initial: getSongInitial ("H")},{title: "泪汪汪", initial: getSongInitial ("L")},{title: "耻辱柱", initial: getSongInitial ("C")},{title: "爱欠费", initial: getSongInitial ("A")},{title: "暴风雨", initial: getSongInitial ("B")},{title: "浪漫主义", initial: getSongInitial ("L")},{title: "凋零的花", initial: getSongInitial ("D")},{title: "再等冬天", initial: getSongInitial ("Z")},{title: "不得不爱", initial: getSongInitial ("B")},{title: "爱情派对", initial: getSongInitial ("A")},{title: "透明轨迹", initial: getSongInitial ("T")},{title: "该死的泪", initial: getSongInitial ("G")},{title: "逍遥一客", initial: getSongInitial ("X")},{title: "你的目光", initial: getSongInitial ("N")},{title: "先说谎的人", initial: getSongInitial ("X")},{title: "高级爱情故事", initial: getSongInitial ("G")},{title: "雨越下越难听", initial: getSongInitial ("Y")},{title: "不做你的朋友", initial: getSongInitial ("B")},{title: "五百二十赫兹", initial: getSongInitial ("W")},{title: "别叫我达芬奇", initial: getSongInitial ("B")},{title: "我的 folykiki", initial: getSongInitial ("W")},{title: "你的 crush 降临了吗", initial: getSongInitial ("N")},{title: "lovesong", initial: getSongInitial ("L")},{title: "珠玉", initial: getSongInitial ("Z")},{title: "花田错", initial: getSongInitial ("H")},{title: "小径里", initial: getSongInitial ("X")},{title: "高级音乐", initial: getSongInitial ("G")},{title: "我的女孩", initial: getSongInitial ("W")},{title: "普通朋友", initial: getSongInitial ("P")},{title: "才二十三", initial: getSongInitial ("C")},{title: "心中的日月", initial: getSongInitial ("X")},{title: "爱我还是他", initial: getSongInitial ("A")},{title: "我管不住我自己", initial: getSongInitial ("W")},{title: "平行世界的游戏", initial: getSongInitial ("P")},{title: "你会不会好好唱歌", initial: getSongInitial ("N")},{title: "rnb 歌手就是这个 b 样", initial: getSongInitial ("R")},{title: "醉", initial: getSongInitial ("Z")},{title: "堕", initial: getSongInitial ("D")},{title: "紫", initial: getSongInitial ("Z")},{title: "你", initial: getSongInitial ("N")},{title: "瞬", initial: getSongInitial ("S")},{title: "慌", initial: getSongInitial ("H")},{title: "我", initial: getSongInitial ("W")},{title: "问", initial: getSongInitial ("W")},{title: "空", initial: getSongInitial ("K")},{title: "鱼", initial: getSongInitial ("Y")},{title: "APT", initial: getSongInitial ("A")},{title: "honey doll", initial: getSongInitial ("H")},{title: "dearjohn", initial: getSongInitial ("D")},{title: "iremember", initial: getSongInitial ("I")},{title: "lettinggo", initial: getSongInitial ("L")},{title: "walkalone", initial: getSongInitial ("W")},{title: "kissgoodbye", initial: getSongInitial ("K")},{title: "ringringring", initial: getSongInitial ("R")},{title: "lovelovelove", initial: getSongInitial ("L")},{title: "beautifullove", initial: getSongInitial ("B")},{title: "我的 711", initial: getSongInitial ("W")},{title: "蜜蜂", initial: getSongInitial ("M")},{title: "叶子", initial: getSongInitial ("Y")},{title: "天后", initial: getSongInitial ("T")},{title: "走马", initial: getSongInitial ("Z")},{title: "倒带", initial: getSongInitial ("D")},{title: "凹凸", initial: getSongInitial ("A")},{title: "十年", initial: getSongInitial ("S")},{title: "后来", initial: getSongInitial ("H")},{title: "偏爱", initial: getSongInitial ("P")},{title: "芒种", initial: getSongInitial ("M")},{title: "子时", initial: getSongInitial ("Z")},{title: "青印", initial: getSongInitial ("Q")},{title: "忘了", initial: getSongInitial ("W")},{title: "太迟", initial: getSongInitial ("T")},{title: "傻子", initial: getSongInitial ("S")},{title: "说谎", initial: getSongInitial ("S")},{title: "腻味", initial: getSongInitial ("N")},{title: "指纹", initial: getSongInitial ("Z")},{title: "循迹", initial: getSongInitial ("X")},{title: "间距", initial: getSongInitial ("J")},{title: "可能", initial: getSongInitial ("K")},{title: "模特", initial: getSongInitial ("M")},{title: "一半", initial: getSongInitial ("Y")},{title: "遥遥", initial: getSongInitial ("Y")},{title: "阴天", initial: getSongInitial ("Y")},{title: "演员", initial: getSongInitial ("Y")},{title: "天下", initial: getSongInitial ("T")},{title: "笑柄", initial: getSongInitial ("X")},{title: "怪咖", initial: getSongInitial ("G")},{title: "红豆", initial: getSongInitial ("H")},{title: "南下", initial: getSongInitial ("N")},{title: "晚安", initial: getSongInitial ("W")},{title: "接纳", initial: getSongInitial ("J")},{title: "歌路", initial: getSongInitial ("G")},{title: "房间", initial: getSongInitial ("F")},{title: "问风", initial: getSongInitial ("W")},{title: "停格", initial: getSongInitial ("T")},{title: "小宇", initial: getSongInitial ("X")},{title: "老街", initial: getSongInitial ("L")},{title: "戒烟", initial: getSongInitial ("J")},{title: "招惹", initial: getSongInitial ("Z")},{title: "余生", initial: getSongInitial ("Y")},{title: "鲸语", initial: getSongInitial ("J")},{title: "走样", initial: getSongInitial ("Z")},{title: "绅士", initial: getSongInitial ("S")},{title: "太阳", initial: getSongInitial ("T")},{title: "我认", initial: getSongInitial ("W")},{title: "面具", initial: getSongInitial ("M")},{title: "亥时", initial: getSongInitial ("H")},{title: "遗憾", initial: getSongInitial ("Y")},{title: "悬溺", initial: getSongInitial ("X")},{title: "废物", initial: getSongInitial ("F")},{title: "心动", initial: getSongInitial ("X")},{title: "嚣张", initial: getSongInitial ("X")},{title: "我要", initial: getSongInitial ("W")},{title: "空心", initial: getSongInitial ("K")},{title: "恒温", initial: getSongInitial ("H")},{title: "若梦", initial: getSongInitial ("R")},{title: "月光", initial: getSongInitial ("Y")},{title: "爱呀", initial: getSongInitial ("A")},{title: "不哭", initial: getSongInitial ("B")},{title: "触电", initial: getSongInitial ("C")},{title: "夜车", initial: getSongInitial ("Y")},{title: "爱你", initial: getSongInitial ("A")},{title: "迷宫", initial: getSongInitial ("M")},{title: "沉溺", initial: getSongInitial ("C")},{title: "是你", initial: getSongInitial ("S")},{title: "成全", initial: getSongInitial ("C")},{title: "小小", initial: getSongInitial ("X")},{title: "蠢货", initial: getSongInitial ("C")},{title: "骗子", initial: getSongInitial ("P")},{title: "无心", initial: getSongInitial ("W")},{title: "妥协", initial: getSongInitial ("T")},{title: "出嫁", initial: getSongInitial ("C")},{title: "芊芊", initial: getSongInitial ("Q")},{title: "荒漠", initial: getSongInitial ("H")},{title: "骑士", initial: getSongInitial ("Q")},{title: "轨迹", initial: getSongInitial ("G")},{title: "情花", initial: getSongInitial ("Q")},{title: "嗯哼", initial: getSongInitial ("E")},{title: "毒蛇", initial: getSongInitial ("D")},{title: "大眠", initial: getSongInitial ("D")},{title: "淘汰", initial: getSongInitial ("T")},{title: "留白", initial: getSongInitial ("L")},{title: "命运", initial: getSongInitial ("M")},{title: "挚友", initial: getSongInitial ("Z")},{title: "年轮", initial: getSongInitial ("N")},{title: "浮夸", initial: getSongInitial ("F")},{title: "哎呀", initial: getSongInitial ("A")},{title: "内疚", initial: getSongInitial ("N")},{title: "目送", initial: getSongInitial ("M")},{title: "还原", initial: getSongInitial ("H")},{title: "童话", initial: getSongInitial ("T")},{title: "自己", initial: getSongInitial ("Z")},{title: "可乐", initial: getSongInitial ("K")},{title: "泪桥", initial: getSongInitial ("L")},{title: "谢谢", initial: getSongInitial ("X")},{title: "有些", initial: getSongInitial ("Y")},{title: "例外", initial: getSongInitial ("L")},{title: "影子", initial: getSongInitial ("Y")},{title: "奶奶", initial: getSongInitial ("N")},{title: "代替", initial: getSongInitial ("D")},{title: "坠落", initial: getSongInitial ("Z")},{title: "爱错", initial: getSongInitial ("A")},{title: "讨厌", initial: getSongInitial ("T")},{title: "圈套", initial: getSongInitial ("Q")},{title: "坦诉", initial: getSongInitial ("T")},{title: "明明", initial: getSongInitial ("M")},{title: "境外", initial: getSongInitial ("J")},{title: "不远", initial: getSongInitial ("B")},{title: "千年", initial: getSongInitial ("Q")},{title: "掉了", initial: getSongInitial ("D")},{title: "兄妹", initial: getSongInitial ("X")},{title: "白羊", initial: getSongInitial ("B")},{title: "卜卦", initial: getSongInitial ("B")},{title: "空空", initial: getSongInitial ("K")},{title: "风月", initial: getSongInitial ("F")},{title: "如果呢", initial: getSongInitial ("R")},{title: "练习题", initial: getSongInitial ("L")},{title: "梦里花", initial: getSongInitial ("M")},{title: "若把你", initial: getSongInitial ("R")},{title: "七月上", initial: getSongInitial ("Q")},{title: "月牙湾", initial: getSongInitial ("Y")},{title: "红玫瑰", initial: getSongInitial ("H")},{title: "万物生", initial: getSongInitial ("W")},{title: "追光者", initial: getSongInitial ("Z")},{title: "说爱你", initial: getSongInitial ("S")},{title: "小幸运", initial: getSongInitial ("X")},{title: "怎么了", initial: getSongInitial ("Z")},{title: "听说你", initial: getSongInitial ("T")},{title: "从前说", initial: getSongInitial ("C")},{title: "给你们", initial: getSongInitial ("G")},{title: "千年泪", initial: getSongInitial ("Q")},{title: "马赛克", initial: getSongInitial ("M")},{title: "云与海", initial: getSongInitial ("Y")},{title: "我太笨", initial: getSongInitial ("W")},{title: "安静了", initial: getSongInitial ("A")},{title: "红昭愿", initial: getSongInitial ("H")},{title: "小嫦娥", initial: getSongInitial ("X")},{title: "黄昏晓", initial: getSongInitial ("H")},{title: "我知道", initial: getSongInitial ("W")},{title: "苏州河", initial: getSongInitial ("S")},{title: "我们俩", initial: getSongInitial ("W")},{title: "戒情人", initial: getSongInitial ("J")},{title: "樱花草", initial: getSongInitial ("Y")},{title: "我会等", initial: getSongInitial ("W")},{title: "他不懂", initial: getSongInitial ("T")},{title: "鸳鸯戏", initial: getSongInitial ("Y")},{title: "爱人呢", initial: getSongInitial ("A")},{title: "红利群", initial: getSongInitial ("H")},{title: "趋光性", initial: getSongInitial ("Q")},{title: "爱不留", initial: getSongInitial ("A")},{title: "海海海", initial: getSongInitial ("H")},{title: "删了吧", initial: getSongInitial ("S")},{title: "虹之间", initial: getSongInitial ("H")},{title: "异想记", initial: getSongInitial ("Y")},{title: "心之火", initial: getSongInitial ("X")},{title: "凄美地", initial: getSongInitial ("Q")},{title: "不值得", initial: getSongInitial ("B")},{title: "惊鸿醉", initial: getSongInitial ("J")},{title: "第三人", initial: getSongInitial ("D")},{title: "热气球", initial: getSongInitial ("R")},{title: "小模样", initial: getSongInitial ("X")},{title: "到不了", initial: getSongInitial ("D")},{title: "路人甲", initial: getSongInitial ("L")},{title: "海与岛", initial: getSongInitial ("H")},{title: "半个人", initial: getSongInitial ("B")},{title: "关键词", initial: getSongInitial ("G")},{title: "想着你", initial: getSongInitial ("X")},{title: "小胡同", initial: getSongInitial ("X")},{title: "复乐园", initial: getSongInitial ("F")},{title: "别爱我", initial: getSongInitial ("B")},{title: "坏天使", initial: getSongInitial ("H")},{title: "棉花糖", initial: getSongInitial ("M")},{title: "有我呢", initial: getSongInitial ("Y")},{title: "孤星泪", initial: getSongInitial ("G")},{title: "必杀技", initial: getSongInitial ("B")},{title: "摇篮谣", initial: getSongInitial ("Y")},{title: "心电心", initial: getSongInitial ("X")},{title: "琉璃月", initial: getSongInitial ("L")},{title: "这叫爱", initial: getSongInitial ("Z")},{title: "下雨了", initial: getSongInitial ("X")},{title: "拼图爱", initial: getSongInitial ("P")},{title: "偏偏要", initial: getSongInitial ("P")},{title: "旧行李", initial: getSongInitial ("J")},{title: "扇子舞", initial: getSongInitial ("S")},{title: "海屿你", initial: getSongInitial ("H")},{title: "跳楼机", initial: getSongInitial ("T")},{title: "带走我", initial: getSongInitial ("D")},{title: "黑眼圈", initial: getSongInitial ("H")},{title: "橘色气球", initial: getSongInitial ("J")},{title: "阴天快乐", initial: getSongInitial ("Y")},{title: "第三人称", initial: getSongInitial ("D")},{title: "就忘了吧", initial: getSongInitial ("J")},{title: "烟雨行舟", initial: getSongInitial ("Y")},{title: "睫毛弯弯", initial: getSongInitial ("J")},{title: "寂寞先生", initial: getSongInitial ("J")},{title: "夏天的风", initial: getSongInitial ("X")},{title: "惊天动地", initial: getSongInitial ("J")},{title: "天空之外", initial: getSongInitial ("T")},{title: "最后一页", initial: getSongInitial ("Z")},{title: "时间煮雨", initial: getSongInitial ("S")},{title: "忽然之间", initial: getSongInitial ("H")},{title: "明天过后", initial: getSongInitial ("M")},{title: "乌梅子酱", initial: getSongInitial ("W")},{title: "动感光波", initial: getSongInitial ("D")},{title: "岁月神偷", initial: getSongInitial ("S")},{title: "独家记忆", initial: getSongInitial ("D")},{title: "多想还小", initial: getSongInitial ("D")},{title: "忘了没有", initial: getSongInitial ("W")},{title: "反正脆弱", initial: getSongInitial ("F")},{title: "字字句句", initial: getSongInitial ("Z")},{title: "失眠 66 秒", initial: getSongInitial ("S")},{title: "我不需要", initial: getSongInitial ("W")},{title: "百年孤寂", initial: getSongInitial ("B")},{title: "雾岛屿鲸", initial: getSongInitial ("W")},{title: "动物世界", initial: getSongInitial ("D")},{title: "你的珍藏", initial: getSongInitial ("N")},{title: "孤单心事", initial: getSongInitial ("G")},{title: "失眠飞行", initial: getSongInitial ("S")},{title: "寂寞烟火", initial: getSongInitial ("J")},{title: "心如止水", initial: getSongInitial ("X")},{title: "我要快乐", initial: getSongInitial ("W")},{title: "我很快乐", initial: getSongInitial ("W")},{title: "匆匆那年", initial: getSongInitial ("C")},{title: "诗人漫步", initial: getSongInitial ("S")},{title: "你好不好", initial: getSongInitial ("N")},{title: "你不明白", initial: getSongInitial ("N")},{title: "爱不单行", initial: getSongInitial ("A")},{title: "爱的魔法", initial: getSongInitial ("A")},{title: "死皮赖脸", initial: getSongInitial ("S")},{title: "万有引力", initial: getSongInitial ("W")},{title: "如果的事", initial: getSongInitial ("R")},{title: "拾荒的人", initial: getSongInitial ("S")},{title: "好友申请", initial: getSongInitial ("H")},{title: "电台情歌", initial: getSongInitial ("D")},{title: "入画江南", initial: getSongInitial ("R")},{title: "爱情转移", initial: getSongInitial ("A")},{title: "到此为止", initial: getSongInitial ("D")},{title: "失落沙洲", initial: getSongInitial ("S")},{title: "今夜有雨", initial: getSongInitial ("J")},{title: "还是分开", initial: getSongInitial ("H")},{title: "失物招领", initial: getSongInitial ("S")},{title: "我恋爱了", initial: getSongInitial ("W")},{title: "呼吸决定", initial: getSongInitial ("H")},{title: "霓虹甜心", initial: getSongInitial ("N")},{title: "路过人间", initial: getSongInitial ("L")},{title: "时间有泪", initial: getSongInitial ("S")},{title: "我发现你", initial: getSongInitial ("W")},{title: "好不容易", initial: getSongInitial ("H")},{title: "那么骄傲", initial: getSongInitial ("N")},{title: "连名带姓", initial: getSongInitial ("L")},{title: "落日微风", initial: getSongInitial ("L")},{title: "海绵宝宝", initial: getSongInitial ("H")},{title: "消散对白", initial: getSongInitial ("X")},{title: "火力全开", initial: getSongInitial ("H")},{title: "昨日青空", initial: getSongInitial ("Z")},{title: "枕边童话", initial: getSongInitial ("Z")},{title: "一点一滴", initial: getSongInitial ("Y")},{title: "世界正中", initial: getSongInitial ("S")},{title: "桃花旗袍", initial: getSongInitial ("T")},{title: "执迷不悟", initial: getSongInitial ("Z")},{title: "情歌悠扬", initial: getSongInitial ("Q")},{title: "越伤越爱", initial: getSongInitial ("Y")},{title: "如果可以", initial: getSongInitial ("R")},{title: "再也没有", initial: getSongInitial ("Z")},{title: "孤独患者", initial: getSongInitial ("G")},{title: "感官失灵", initial: getSongInitial ("G")},{title: "再见深海", initial: getSongInitial ("Z")},{title: "分开旅行", initial: getSongInitial ("F")},{title: "雨声渐缓", initial: getSongInitial ("Y")},{title: "忽远忽近", initial: getSongInitial ("H")},{title: "心痛无医", initial: getSongInitial ("X")},{title: "临床治疗", initial: getSongInitial ("L")},{title: "易燃易爆炸", initial: getSongInitial ("Y")},{title: "如果爱忘了", initial: getSongInitial ("R")},{title: "接下来如何", initial: getSongInitial ("J")},{title: "少一点天分", initial: getSongInitial ("S")},{title: "你给我听好", initial: getSongInitial ("N")},{title: "红色高跟鞋", initial: getSongInitial ("H")},{title: "一直很安静", initial: getSongInitial ("Y")},{title: "踮起脚尖爱", initial: getSongInitial ("D")},{title: "寂寞沙洲冷", initial: getSongInitial ("J")},{title: "走在冷风中", initial: getSongInitial ("Z")},{title: "遗失的美好", initial: getSongInitial ("Y")},{title: "下个路口见", initial: getSongInitial ("X")},{title: "我的歌声里", initial: getSongInitial ("W")},{title: "没那么简单", initial: getSongInitial ("M")},{title: "怎么唱情歌", initial: getSongInitial ("Z")},{title: "等着你回来", initial: getSongInitial ("D")},{title: "想你时风起", initial: getSongInitial ("X")},{title: "遗憾也值得", initial: getSongInitial ("Y")},{title: "旅行中忘记", initial: getSongInitial ("L")},{title: "爱死了昨天", initial: getSongInitial ("A")},{title: "我们都不坏", initial: getSongInitial ("W")},{title: "七月七日晴", initial: getSongInitial ("Q")},{title: "想念拟人化", initial: getSongInitial ("X")},{title: "遗失的心跳", initial: getSongInitial ("Y")},{title: "等你到冬天", initial: getSongInitial ("D")},{title: "选择性回避", initial: getSongInitial ("X")},{title: "人间不值得", initial: getSongInitial ("R")},{title: "有一种悲伤", initial: getSongInitial ("Y")},{title: "追风筝的人", initial: getSongInitial ("Z")},{title: "一样的月光", initial: getSongInitial ("Y")},{title: "简弘亦泡沫", initial: getSongInitial ("J")},{title: "转身即心痛", initial: getSongInitial ("Z")},{title: "带你去旅行", initial: getSongInitial ("D")},{title: "回忆那么伤", initial: getSongInitial ("H")},{title: "爱就一个字", initial: getSongInitial ("A")},{title: "一直往前走", initial: getSongInitial ("Y")},{title: "眼泪记得你", initial: getSongInitial ("Y")},{title: "我只能离开", initial: getSongInitial ("W")},{title: "会开花的云", initial: getSongInitial ("H")},{title: "十一种美丽", initial: getSongInitial ("S")},{title: "国王与乞丐", initial: getSongInitial ("G")},{title: "别让爱凋落", initial: getSongInitial ("B")},{title: "张震岳勇气", initial: getSongInitial ("Z")},{title: "我可以忘记你", initial: getSongInitial ("W")},{title: "你不知道的事", initial: getSongInitial ("N")},{title: "失恋阵线联盟", initial: getSongInitial ("S")},{title: "永不失联的爱", initial: getSongInitial ("Y")},{title: "你要的全拿走", initial: getSongInitial ("N")},{title: "是妈妈是女儿", initial: getSongInitial ("S")},{title: "我们都被忘了", initial: getSongInitial ("W")},{title: "去有风的地方", initial: getSongInitial ("Q")},{title: "放爱情一个假", initial: getSongInitial ("F")},{title: "走不出的回忆", initial: getSongInitial ("Z")},{title: "那时错这时对", initial: getSongInitial ("N")},{title: "请在原地等待", initial: getSongInitial ("Q")},{title: "别听悲伤的歌", initial: getSongInitial ("B")},{title: "再见再也不见", initial: getSongInitial ("Z")},{title: "血腥爱情故事", initial: getSongInitial ("X")},{title: "有天会再相见", initial: getSongInitial ("Y")},{title: "无人知晓的我", initial: getSongInitial ("W")},{title: "这条小鱼在乎", initial: getSongInitial ("Z")},{title: "我的爱没前奏", initial: getSongInitial ("W")},{title: "爱情怎么喊停", initial: getSongInitial ("A")},{title: "第 57 次取消发送", initial: getSongInitial ("D")},{title: "带我去找夜生活", initial: getSongInitial ("D")},{title: "不必在乎我是谁", initial: getSongInitial ("B")},{title: "不被祝福的祝福", initial: getSongInitial ("B")},{title: "我期待的不是雪", initial: getSongInitial ("W")},{title: "爱了很久的朋友", initial: getSongInitial ("A")},{title: "我是真的爱上你", initial: getSongInitial ("W")},{title: "夜空中最亮的星", initial: getSongInitial ("Y")},{title: "这世界那么多人", initial: getSongInitial ("Z")},{title: "你就不要想起我", initial: getSongInitial ("N")},{title: "你为我撑过的伞", initial: getSongInitial ("N")},{title: "如果这就是爱情", initial: getSongInitial ("R")},{title: "北京东路的日子", initial: getSongInitial ("B")},{title: "夏夜最后的烟火", initial: getSongInitial ("X")},{title: "未来几十个夏天", initial: getSongInitial ("W")},{title: "地球流浪地球活", initial: getSongInitial ("D")},{title: "我很好那么你呢", initial: getSongInitial ("W")},{title: "遇上你之前的我", initial: getSongInitial ("Y")},{title: "在加纳共和国离婚", initial: getSongInitial ("Z")},{title: "不如回家喝自来水", initial: getSongInitial ("B")},{title: "亲爱的那不是爱情", initial: getSongInitial ("Q")},{title: "好像掉进爱情海里", initial: getSongInitial ("H")},{title: "世界上的另一个我", initial: getSongInitial ("S")},{title: "好想爱这个世界啊", initial: getSongInitial ("H")},{title: "陪你度过漫长岁月", initial: getSongInitial ("P")},{title: "一个人想着一个人", initial: getSongInitial ("Y")},{title: "没有人不比我快乐", initial: getSongInitial ("M")},{title: "我的灵魂是个哑巴", initial: getSongInitial ("W")},{title: "许愿池的希腊少女", initial: getSongInitial ("X")},{title: "四点的海棠花未眠", initial: getSongInitial ("S")},{title: "刻在我心底的名字", initial: getSongInitial ("K")},{title: "不是因为寂寞才想你", initial: getSongInitial ("B")},{title: "住在天狼星的那个人", initial: getSongInitial ("Z")},{title: "白鸽乌鸦相爱的戏码", initial: getSongInitial ("B")},{title: "我的眼泪你的战利品", initial: getSongInitial ("W")},{title: "我对着自己开了一枪", initial: getSongInitial ("W")},{title: "下一次爱情来的时候", initial: getSongInitial ("X")},{title: "要不然我们就这样一万年", initial: getSongInitial ("Y")}
+
+
+   ];
+
+        // 更新歌曲计数
+        function updateSongCount(count) {
+            document.getElementById('song-count').textContent = `风筝的${count}首歌`;
+        }
+
+        // 复制文本到剪贴板
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+            
+            // 显示复制通知
+            const notification = document.getElementById('copy-notification');
+            notification.textContent = `已复制: ${text}`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 2000);
+        }
+
+        // 随机选择一首歌
+        function getRandomSong() {
+            const randomIndex = Math.floor(Math.random() * songs.length);
+            return songs[randomIndex].title;
+        }
+
+        // 渲染歌曲列表
+        function renderSongs(songsArray) {
+            const songList = document.getElementById('song-list');
+            songList.innerHTML = '';
+            
+            // 更新歌曲计数
+            updateSongCount(songsArray.length);
+            
+            if (songsArray.length === 0) {
+                songList.innerHTML = '<div class="empty-message">当前没有这首歌哦~</div>';
+                return;
+            }
+            
+            songsArray.forEach((song, index) => {
+                const songCard = document.createElement('div');
+                songCard.className = 'song-card';
+                songCard.setAttribute('data-title', song.title);
+                
+                songCard.innerHTML = `
+                    <div class="song-number">${index + 1}</div>
+                    <div class="song-info">
+                        <h3 class="song-title">${song.title}</h3>
+                    </div>
+                `;
+                
+                // 添加点击复制功能
+                songCard.addEventListener('click', function() {
+                    const songTitle = this.getAttribute('data-title');
+                    copyToClipboard(songTitle);
+                    
+                    // 添加复制反馈效果
+                    this.classList.add('copied');
+                    setTimeout(() => {
+                        this.classList.remove('copied');
+                    }, 1500);
+                });
+                
+                songList.appendChild(songCard);
+            });
+        }
+        
+        // 自定义下拉菜单功能
+        function initCustomSelect() {
+            const customSelect = document.querySelector('.custom-select');
+            const selectSelected = document.querySelector('.select-selected');
+            const selectItems = document.querySelector('.select-items');
+            const selectItemsList = document.querySelectorAll('.select-item');
+            
+            // 点击选择器时切换显示/隐藏下拉菜单
+            selectSelected.addEventListener('click', function(e) {
+                e.stopPropagation();
+                selectItems.classList.toggle('active');
+                selectSelected.classList.toggle('select-arrow-active');
+            });
+            
+            // 点击选项时更新选择器
+            selectItemsList.forEach(item => {
+                item.addEventListener('click', function() {
+                    const value = this.getAttribute('value');
+                    selectSelected.textContent = this.textContent;
+                    selectItems.classList.remove('active');
+                    selectSelected.classList.remove('select-arrow-active');
+                    
+                    // 移除之前选中的样式
+                    document.querySelectorAll('.select-item.selected').forEach(el => {
+                        el.classList.remove('selected');
+                    });
+                    
+                    // 添加选中样式
+                    this.classList.add('selected');
+                    
+                    // 根据选择的值筛选歌曲
+                    if (value === 'all') {
+                        renderSongs(songs);
+                    } else if (value === '#') {
+                        // 筛选数字或符号开头的歌曲
+                        const filteredSongs = songs.filter(song => 
+                            /^[0-9!@#$%^&*()_+=\-[\]{};':"\\|,.<>/?]/.test(song.title)
+                        );
+                        renderSongs(filteredSongs);
+                    } else {
+                        // 筛选特定字母开头的歌曲
+                        const filteredSongs = songs.filter(song => 
+                            song.initial === value
+                        );
+                        renderSongs(filteredSongs);
+                    }
+                });
+            });
+            
+            // 点击页面其他地方时关闭下拉菜单
+            document.addEventListener('click', function(e) {
+                if (!customSelect.contains(e.target)) {
+                    selectItems.classList.remove('active');
+                    selectSelected.classList.remove('select-arrow-active');
+                }
+            });
+        }
+
+        // 回到顶部功能
+        function initBackToTop() {
+            const backToTopBtn = document.getElementById('back-to-top');
+            
+            // 监听滚动事件
+            window.addEventListener('scroll', function() {
+                if (window.pageYOffset > 300) {
+                    backToTopBtn.classList.add('visible');
+                } else {
+                    backToTopBtn.classList.remove('visible');
+                }
+            });
+            
+            // 点击回到顶部
+            backToTopBtn.addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+        }
+        
+        // 初始化页面
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSongs(songs);
+            initCustomSelect();
+            initBackToTop(); // 初始化回到顶部按钮
+            
+            // 搜索功能
+            const searchInput = document.getElementById('search-input');
+            searchInput.addEventListener('input', () => {
+                const searchTerm = searchInput.value.toLowerCase();
+                const filteredSongs = songs.filter(song => 
+                    song.title.toLowerCase().includes(searchTerm)
+                );
+                renderSongs(filteredSongs);
+            });
+            
+            // 随机歌曲按钮
+            document.getElementById('random-song').addEventListener('click', function() {
+                const randomSong = getRandomSong();
+                copyToClipboard(randomSong);
+            });
+            
+            // 来找我吧按钮 - 修改为直接跳转
+            document.getElementById('find-me').addEventListener('click', function() {
+                // 直接跳转到链接
+                window.open("https://b23.tv/BZV96Wh", "_blank");
+            });
+        });
+    </script>
+</body>
+</html>
